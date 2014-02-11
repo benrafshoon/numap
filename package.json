@@ -1,0 +1,9 @@
+{
+	"name": "numap",
+	"version": "0.1.0",
+	"author": "Ben Rafshoon <benraf@u.northwestern.edu",
+	"description": "Car-less navigation for college students",
+	"dependencies": {
+		"mongoose": "3.8.x"
+	}
+}
