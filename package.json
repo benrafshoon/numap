@@ -4,6 +4,8 @@
 	"author": "Ben Rafshoon <benraf@u.northwestern.edu",
 	"description": "Car-less navigation for college students",
 	"dependencies": {
-		"mongoose": "3.8.x"
+		"mongoose": "3.8.x",
+		"express": "3.4.x",
+		"jade": "1.1.x"
 	}
 }
