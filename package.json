@@ -6,6 +6,8 @@
 	"dependencies": {
 		"mongoose": "3.8.x",
 		"express": "3.4.x",
-		"jade": "1.1.x"
+		"jade": "1.1.x",
+		"cheerio": "0.13.x",
+		"node-sass": "0.8.x"
 	}
 }

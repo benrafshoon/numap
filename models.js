@@ -1,4 +1,4 @@
-exports.initialize = function(mongoose) {
+exports.initialize = function(mongoose, onInitialized) {
 	return function() {
 		var Schema = mongoose.Schema;
 		var edgeSchema = new Schema({
@@ -25,12 +25,58 @@ exports.initialize = function(mongoose) {
 		});
 		mongoose.model("NamedPath", namedPathSchema);
 		
+		var shuttleRouteSchema = new Schema({
+			name: String, //ie Evanston Loop, Intercampus
+			doubleMapId: Number,
+			doubleMapName: String,
+			doubleMapShortName: String,
+			doubleMapDescription: String,
+			doubleMapColor: String,
+			dateModified: Date
+		});
+		mongoose.model("ShuttleRoute", shuttleRouteSchema);
+		
+		var shuttleSubrouteSchema = new Schema({
+			shuttleRoute: Schema.Types.ObjectId, 
+			name: String, //ie Sun-Wed Evanston Loop, Evanston->Chicago Intercampus
+			startDayOfWeek: Number, // 1 = monday, 2 = tuesday, ... 7 = sunday
+			startHour: Number, //0:23
+			startMinute: Number, //0:59
+			endDayOfWeek: Number, //Start end times are of the form [start, end)
+			endHour: Number, //If you end at 6:00, then the last valid time would be 5:59
+			endMinute: Number,
+			dataURL: String // NU Shuttles website url
+		});
+		mongoose.model("ShuttleSubroute", shuttleSubrouteSchema);
+		
 		var shuttleStopSchema = new Schema({
-			shuttleName: String,
-			postedStopTime: Date
+			name: String,
+			doubleMapId: Number,
+			doubleMapDescription: String,
+			doubleMapLatitude: Number,
+			doubleMapLongitude: Number,
+			latitude: Number,
+			longitude: Number,
+			dateModified: Date
+		});
+		mongoose.model("ShuttleStop", shuttleStopSchema);
+		
+		var shuttleEdgeSchema = new Schema({
+			startNode: Schema.Types.ObjectId,
+			stopLocation: Schema.Types.ObjectId,
+			postedArrivalTime: Date,
+			postedTravelTime: Number, //in seconds, like all other durations
+			shuttleName: String, //Ie Evanston Loop, Intercampus
+			shuttleRoute: String, //Ie 
+			dataSource: String, //Either NU website ("nuScrapper") or physical sign at shuttle stop ("sign")
+			dateModified: Date
 			//Eventually will have a set of actual times to compute average and worst case (ie 99 percentile) times
 		});
-		mongoose.model("Shuttle", shuttleStopSchema);
+		mongoose.model("ShuttleEdge", shuttleEdgeSchema);
+		if(onInitialized) {
+			onInitialized();
+		}
+		
 	};
 };
 
