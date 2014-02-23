@@ -22,7 +22,7 @@ db.once("open", models.initialize(mongoose, function() {
 var app = express();
 app.set("view engine", "jade");
 
-app.use("/public/css", sass.middleware({
+app.use("/static/css", sass.middleware({
 	src: __dirname + "/sass",
 	dest: __dirname + "/public/css",
 	debug: true,
@@ -35,8 +35,12 @@ app.use('/static', express.static(__dirname + '/public'));
 app.use('/lib', express.static(__dirname + '/frontend_lib'));
 
 app.all("/data/shuttleroute", shuttleRouteController.handler());
+
 app.get("/editor", function(request, response) {
-	response.render("editor");
+	response.render("editor/index");
+});
+app.get("/editor/:editorpartial", function(request, response) {
+	response.render("editor/" + request.params.editorpartial);
 });
 
 app.use(function(request, response) {
